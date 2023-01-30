@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "openblocks:block/fake_grass_top",
+    "front": "openblocks:block/fake_grass_side",
+    "side": "openblocks:block/fake_grass_side",
+    "bottom": "block/dirt"
+  }
+}
