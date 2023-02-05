@@ -1,6 +1,7 @@
 package net.farrucho.openblocks.block.custom;
 
 import net.farrucho.openblocks.block.OpenBlocksModBlocks;
+import net.farrucho.openblocks.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,13 +10,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ElevatorBlockFunctions {
+    static int RANGE = ModConfigs.ELEVATOR_BLOCK_RANGE;
+
     public static boolean goUp(BlockPos bp, World world, PlayerEntity player){
         Block CURRENT_ELEVATOR_TYPE_BLOCK = world.getBlockState(new BlockPos(bp.getX(),bp.getY(),bp.getZ())).getBlock();
 
 
         //////////player.sendMessage(Text.of(CURRENT_ELEVATOR_TYPE_BLOCK.toString()),true);
 
-        for(int y = bp.getY() + 2; y <= bp.getY() + 21; ++y){//offset 25 em relacao a cabeca do player
+        for(int y = bp.getY() + 2; y <= bp.getY() + RANGE + 1; ++y){//offset 25 em relacao a cabeca do player
             BlockPos currentBlockPos = new BlockPos(bp.getX(),y,bp.getZ());
 
             if(world.getBlockState(currentBlockPos).isOf(CURRENT_ELEVATOR_TYPE_BLOCK) &&
@@ -29,13 +32,14 @@ public class ElevatorBlockFunctions {
         return false;
     }
 
-    //METER RANGE DE 20 BLOCOS!!! //meter som
+    //meter som
+
     public static boolean goDown(BlockPos bp, World world, PlayerEntity player){
         Block CURRENT_ELEVATOR_TYPE_BLOCK = world.getBlockState(new BlockPos(bp.getX(),bp.getY(),bp.getZ())).getBlock();
         //////////player.sendMessage(Text.of(CURRENT_ELEVATOR_TYPE_BLOCK.toString()),true);
 
 
-        for(int y = bp.getY() - 2; y >= bp.getY() - 21; --y){
+        for(int y = bp.getY() - 2; y >= bp.getY() - RANGE - 1; --y){
             BlockPos currentBlockPos = new BlockPos(bp.getX(),y,bp.getZ());
 
             //player.sendMessage(Text.of( "y = " + y + world.getBlockState(currentBlockPos).isOf(OpenBlocksModBlocks.ELEVATOR_BLOCK)),true);

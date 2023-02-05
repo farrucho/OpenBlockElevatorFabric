@@ -2,6 +2,7 @@ package net.farrucho.openblocks.block.custom;
 
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.farrucho.openblocks.config.ModConfigs;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +23,7 @@ import static net.farrucho.openblocks.block.custom.ElevatorBlockFunctions.goDown
 public class ElevatorBlock extends Block {
     //public static final BooleanProperty CLICKED_GRASS_BLOCK = BooleanProperty.of("clicked");
     public static final IntProperty BLOCKNUMPROPERTY = IntProperty.of("blocknum",0,70);
+
 
     public ElevatorBlock(AbstractBlock.Settings settings) {
         super(settings);
