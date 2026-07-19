@@ -19,11 +19,11 @@
   "entrypoints": {
     "main": [
       "net.farrucho.openblocks.OpenBlocks"
+    ],
+    "client": [
+      "net.farrucho.openblocks.OpenBlocksClient"
     ]
   },
-  "client": [
-    "net.farrucho.openblocks.OpenBlocksClient"
-  ],
   "mixins": [
     "openblocks.mixins.json"
   ],

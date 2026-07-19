@@ -1,12 +1,17 @@
 package net.farrucho.openblocks;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.farrucho.openblocks.block.OpenBlocksModBlocks;
+import net.farrucho.openblocks.block.custom.ElevatorBlockEntityRenderer;
 
 public class OpenBlocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        /*ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-            content.add(OpenBlocksModBlocks.ELEVATOR_BLOCK.asItem());
-        });*/
+        OpenBlocks.LOGGER.info("CLIENT INITIALIZER RUNNING");
+        BlockEntityRendererRegistry.register(
+                OpenBlocksModBlocks.ELEVATOR_BLOCK_ENTITY,
+                ElevatorBlockEntityRenderer::new
+        );
     }
 }

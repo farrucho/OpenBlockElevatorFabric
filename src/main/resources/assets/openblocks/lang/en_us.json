@@ -1,3 +1,4 @@
 {
-  "block.openblocks.elevator_block": "Elevator Block"
+  "block.openblocks.elevator_block": "Elevator Block",
+  "message.openblocks.elevator_needs_full_cube": "This block can't be used as camouflage"
 }

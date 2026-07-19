@@ -2,9 +2,12 @@ package net.farrucho.openblocks.block;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.farrucho.openblocks.OpenBlocks;
 import net.farrucho.openblocks.block.custom.ElevatorBlock;
+import net.farrucho.openblocks.block.custom.ElevatorBlockEntity;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -20,6 +23,12 @@ public class OpenBlocksModBlocks {
     public static final Block ELEVATOR_BLOCK = registerBlock("elevator_block", new ElevatorBlock(FabricBlockSettings.of(Material.WOOL).hardness(0.8f).sounds(BlockSoundGroup.WOOL)), ItemGroup.REDSTONE);
     //1.19.3 itemgroups
     //1.19.2 itemgroup
+
+    public static final BlockEntityType<ElevatorBlockEntity> ELEVATOR_BLOCK_ENTITY = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            new Identifier(OpenBlocks.MOD_ID, "elevator_block_entity"),
+            FabricBlockEntityTypeBuilder.create(ElevatorBlockEntity::new, ELEVATOR_BLOCK).build()
+    );
 
     private static Block registerBlock(String name, Block block, ItemGroup group){
         registerBlockItem(name, block, group);
