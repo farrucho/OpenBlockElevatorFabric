@@ -21,8 +21,7 @@ import net.minecraft.world.World;
 import static net.farrucho.openblocks.block.custom.ElevatorBlockFunctions.goDown;
 
 public class ElevatorBlock extends Block {
-    public static final IntProperty BLOCKNUMPROPERTY = IntProperty.of("blocknum", 0, 70);
-    public static final IntProperty CAMOUFLAGE_BLOCK_ID = IntProperty.of("camouflage_block_id", 0, 10000);
+    public static final IntProperty BLOCKNUMPROPERTY = IntProperty.of("blocknum", 0, 10000);
 
 
     public ElevatorBlock(AbstractBlock.Settings settings) {
