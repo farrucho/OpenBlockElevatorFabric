@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.registry.Registries;
 
 //import javax.annotation.Nullable;
 import org.jetbrains.annotations.Nullable;
@@ -72,7 +73,11 @@ public class ElevatorBlockEntity extends BlockEntity {
         super.readNbt(nbt);
         BlockState previous = camouflageState;
         if (nbt.contains(CAMOUFLAGE_KEY, NbtElement.COMPOUND_TYPE)) {
-            BlockState state = NbtHelper.toBlockState(nbt.getCompound(CAMOUFLAGE_KEY));
+            //BlockState state = NbtHelper.toBlockState(nbt.getCompound(CAMOUFLAGE_KEY));
+            BlockState state = NbtHelper.toBlockState(
+                    Registries.BLOCK.getReadOnlyWrapper(),
+                    nbt.getCompound(CAMOUFLAGE_KEY)
+            );
             // NbtHelper.toBlockState falls back to Blocks.AIR if the stored block id
             // can't be resolved (e.g. the camo block's mod was removed) - treat that as "no camo".
             camouflageState = state.isAir() ? null : state;
