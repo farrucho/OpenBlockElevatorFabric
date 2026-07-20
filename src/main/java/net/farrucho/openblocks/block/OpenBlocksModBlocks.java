@@ -1,6 +1,6 @@
 package net.farrucho.openblocks.block;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.Item;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -49,7 +49,7 @@ public class OpenBlocksModBlocks {
         Item item = Registry.register(
                 Registries.ITEM,
                 new Identifier(OpenBlocks.MOD_ID, name),
-                new BlockItem(block, new FabricItemSettings())
+                new BlockItem(block, new  Item.Settings())
         );
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {

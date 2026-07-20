@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 
 //import javax.annotation.Nullable;
 import org.jetbrains.annotations.Nullable;
@@ -54,8 +55,8 @@ public class ElevatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
+        super.writeNbt(nbt, registries);
         // IMPORTANT: always write something here, even when camouflageState is null. If this
         // method (combined with super.writeNbt, which writes nothing by default) produces a
         // fully empty NbtCompound, BlockEntityUpdateS2CPacket collapses that to "no data" and
@@ -69,24 +70,24 @@ public class ElevatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
+        super.readNbt(nbt, registries);
+
         BlockState previous = camouflageState;
+
         if (nbt.contains(CAMOUFLAGE_KEY, NbtElement.COMPOUND_TYPE)) {
-            //BlockState state = NbtHelper.toBlockState(nbt.getCompound(CAMOUFLAGE_KEY));
             BlockState state = NbtHelper.toBlockState(
-                    Registries.BLOCK.getReadOnlyWrapper(),
+                    registries.getWrapperOrThrow(Registries.BLOCK.getKey()),
                     nbt.getCompound(CAMOUFLAGE_KEY)
             );
-            // NbtHelper.toBlockState falls back to Blocks.AIR if the stored block id
-            // can't be resolved (e.g. the camo block's mod was removed) - treat that as "no camo".
+
             camouflageState = state.isAir() ? null : state;
         } else {
             camouflageState = null;
         }
+
         if (!java.util.Objects.equals(previous, camouflageState)) {
             String side = (world != null && world.isClient) ? "CLIENT" : "SERVER/unknown";
-            //net.farrucho.openblocks.OpenBlocks.LOGGER.info("[Elevator DEBUG] ({}) readNbt at {} -> camouflageState = {}", side, pos, camouflageState);
         }
     }
 
@@ -100,7 +101,7 @@ public class ElevatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
+        return createNbt(registries);
     }
 }

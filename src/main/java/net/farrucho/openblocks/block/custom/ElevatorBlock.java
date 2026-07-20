@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.registry.Registry;
@@ -49,7 +48,13 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(
+            BlockState state,
+            World world,
+            BlockPos pos,
+            PlayerEntity player,
+            BlockHitResult hit
+    ) {
         if (world.isClient) {
             // Let the server handle the actual state change; still "succeed" client-side
             // so the swing animation plays and the interaction isn't passed further down.
@@ -64,7 +69,7 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
         }
         ElevatorBlockEntity elevatorEntity = (ElevatorBlockEntity) be;
 
-        ItemStack heldStack = player.getStackInHand(hand);
+        ItemStack heldStack = player.getMainHandStack();
         Item itemUsed = heldStack.getItem();
 
         if (!(itemUsed instanceof BlockItem)) {
