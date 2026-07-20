@@ -23,24 +23,7 @@ public class OpenBlocksEntityJumpState {
         World world = p.getEntityWorld();
         if(!p.world.isClient()){
             //p.sendMessage(Text.literal("player jumped"));
-            Position posUnder = new Position() {
-                @Override
-                public double getX() {
-                    return p.getX();
-                }
-
-                @Override
-                public double getY() {
-                    return p.getY() - 1;
-                }
-
-                @Override
-                public double getZ() {
-                    return p.getZ();
-                }
-            };
-
-            BlockPos blockpos = new BlockPos(posUnder);
+            BlockPos blockpos = p.getBlockPos().down();
             //Block block = world.getBlockState(blockpos).getBlock();
             BlockState blockState = world.getBlockState(blockpos);
             if(blockState.isOf(OpenBlocksModBlocks.ELEVATOR_BLOCK) && !p.isInSneakingPose()){
