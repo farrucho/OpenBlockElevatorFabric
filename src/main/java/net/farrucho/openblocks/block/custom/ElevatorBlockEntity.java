@@ -75,13 +75,15 @@ public class ElevatorBlockEntity extends BlockEntity {
 
         BlockState previous = camouflageState;
 
-        if (nbt.contains(CAMOUFLAGE_KEY, NbtElement.COMPOUND_TYPE)) {
-            BlockState state = NbtHelper.toBlockState(
-                    registries.getOrThrow(Registries.BLOCK.getKey()),
-                    nbt.getCompound(CAMOUFLAGE_KEY)
-            );
+        if (nbt.contains(CAMOUFLAGE_KEY)) {
+            nbt.getCompound(CAMOUFLAGE_KEY).ifPresent(compound -> {
+                BlockState state = NbtHelper.toBlockState(
+                        registries.getOrThrow(Registries.BLOCK.getKey()),
+                        compound
+                );
 
-            camouflageState = state.isAir() ? null : state;
+                camouflageState = state.isAir() ? null : state;
+            });
         } else {
             camouflageState = null;
         }
