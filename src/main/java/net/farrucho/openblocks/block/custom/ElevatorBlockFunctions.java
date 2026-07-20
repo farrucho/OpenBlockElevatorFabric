@@ -31,7 +31,12 @@ public class ElevatorBlockFunctions {
                 BlockPos destination = new BlockPos(bp.getX(), y+1, bp.getZ());
                 playTeleportEffects(world, bp, destination);
                 //player.setPos(bp.getX(), y+1, bp.getZ());
-                player.teleport(bp.getX() + 0.5, y+1, bp.getZ() + 0.5);
+                player.teleport(
+                        bp.getX() + 0.5,
+                        y + 1,
+                        bp.getZ() + 0.5,
+                        false
+                );
                 return true;
             }
         }
@@ -52,7 +57,12 @@ public class ElevatorBlockFunctions {
                     world.getBlockState(new BlockPos(bp.getX(),y+2,bp.getZ())).isOf(Blocks.AIR)){
                 BlockPos destination = new BlockPos(bp.getX(), y+1, bp.getZ());
                 playTeleportEffects(world, bp, destination);
-                player.teleport(bp.getX() + 0.5, y+1, bp.getZ() + 0.5);
+                player.teleport(
+                        bp.getX() + 0.5,
+                        y + 1,
+                        bp.getZ() + 0.5,
+                        false
+                );
                 player.setSneaking(false);
                 //player.sendMessage(Text.of("Tp para baixo feito"),true);
                 return true;

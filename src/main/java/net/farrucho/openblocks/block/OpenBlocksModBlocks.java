@@ -31,7 +31,7 @@ public class OpenBlocksModBlocks {
 
     public static final BlockEntityType<ElevatorBlockEntity> ELEVATOR_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            new Identifier(OpenBlocks.MOD_ID, "elevator_block_entity"),
+            Identifier.of(OpenBlocks.MOD_ID, "elevator_block_entity"),
             FabricBlockEntityTypeBuilder.create(ElevatorBlockEntity::new, ELEVATOR_BLOCK).build()
     );
 
@@ -40,7 +40,7 @@ public class OpenBlocksModBlocks {
 
         return Registry.register(
                 Registries.BLOCK,
-                new Identifier(OpenBlocks.MOD_ID, name),
+                Identifier.of(OpenBlocks.MOD_ID, name),
                 block
         );
     }
@@ -48,7 +48,7 @@ public class OpenBlocksModBlocks {
     private static Item registerBlockItem(String name, Block block) {
         Item item = Registry.register(
                 Registries.ITEM,
-                new Identifier(OpenBlocks.MOD_ID, name),
+                Identifier.of(OpenBlocks.MOD_ID, name),
                 new BlockItem(block, new  Item.Settings())
         );
 
