@@ -20,8 +20,8 @@ public class OpenBlocksEntityJumpState {
     private void injected(CallbackInfo info) {
         PlayerEntity p = (PlayerEntity)(Object)this;
         //World world = p.getWorld();
-        World world = p.getEntityWorld();
-        if(!p.world.isClient()){
+        World world = p.getWorld();
+        if(!world.isClient()){
             //p.sendMessage(Text.literal("player jumped"));
             BlockPos blockpos = p.getBlockPos().down();
             //Block block = world.getBlockState(blockpos).getBlock();

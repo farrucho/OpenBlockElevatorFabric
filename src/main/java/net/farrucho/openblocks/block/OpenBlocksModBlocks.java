@@ -8,7 +8,8 @@ import net.farrucho.openblocks.OpenBlocks;
 import net.farrucho.openblocks.block.custom.ElevatorBlock;
 import net.farrucho.openblocks.block.custom.ElevatorBlockEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+//import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -23,9 +24,8 @@ public class OpenBlocksModBlocks {
     public static final Block ELEVATOR_BLOCK = registerBlock(
             "elevator_block",
             new ElevatorBlock(
-                    FabricBlockSettings.of(Material.WOOL)
-                            .hardness(0.8f)
-                            .sounds(BlockSoundGroup.WOOL)
+                    FabricBlockSettings.copyOf(Blocks.WHITE_WOOL)
+                            .strength(0.8f)
             )
     );
 
