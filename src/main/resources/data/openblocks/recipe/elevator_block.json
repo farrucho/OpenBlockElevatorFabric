@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": "#minecraft:wool",
+    "X": "minecraft:ender_pearl"
+  },
+  "result": {
+    "id": "openblocks:elevator_block",
+    "count": 1
+  }
+}
