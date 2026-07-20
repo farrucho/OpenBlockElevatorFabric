@@ -8,6 +8,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
@@ -55,41 +57,28 @@ public class ElevatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.writeNbt(nbt, registries);
-        // IMPORTANT: always write something here, even when camouflageState is null. If this
-        // method (combined with super.writeNbt, which writes nothing by default) produces a
-        // fully empty NbtCompound, BlockEntityUpdateS2CPacket collapses that to "no data" and
-        // the client never actually receives/applies the update - which is why clearing the
-        // camo used to get stuck showing the last camo texture forever. This boolean guarantees
-        // the compound always has at least one key, so "clear" updates actually reach the client.
-        nbt.putBoolean(HAS_CAMOUFLAGE_KEY, camouflageState != null);
+    protected void writeData(WriteView view) {
+        super.writeData(view);
+
+        view.putBoolean(HAS_CAMOUFLAGE_KEY, camouflageState != null);
+
         if (camouflageState != null) {
-            nbt.put(CAMOUFLAGE_KEY, NbtHelper.fromBlockState(camouflageState));
+            view.put(CAMOUFLAGE_KEY, BlockState.CODEC, camouflageState);
         }
     }
 
     @Override
-    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.readNbt(nbt, registries);
+    protected void readData(ReadView view) {
+        super.readData(view);
 
-        BlockState previous = camouflageState;
+        camouflageState = null;
 
-        if (nbt.contains(CAMOUFLAGE_KEY)) {
-            nbt.getCompound(CAMOUFLAGE_KEY).ifPresent(compound -> {
-                BlockState state = NbtHelper.toBlockState(
-                        registries.getOrThrow(Registries.BLOCK.getKey()),
-                        compound
-                );
+        if (view.getBoolean(HAS_CAMOUFLAGE_KEY, false)) {
+            camouflageState = view.read(CAMOUFLAGE_KEY, BlockState.CODEC).orElse(null);
 
-                camouflageState = state.isAir() ? null : state;
-            });
-        } else {
-            camouflageState = null;
-        }
-
-        if (!java.util.Objects.equals(previous, camouflageState)) {
-            String side = (world != null && world.isClient) ? "CLIENT" : "SERVER/unknown";
+            if (camouflageState != null && camouflageState.isAir()) {
+                camouflageState = null;
+            }
         }
     }
 

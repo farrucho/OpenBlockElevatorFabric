@@ -15,6 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 
 /**
  * Renders the elevator block as whatever block it's camouflaged as. Because this asks
@@ -68,16 +69,14 @@ public class ElevatorBlockEntityRenderer implements BlockEntityRenderer<Elevator
             BlockRenderManager blockRenderManager = client.getBlockRenderManager();
             BlockStateModel model = blockRenderManager.getModel(renderState);
 
-            // Updated parameters for 1.21.4 / 1.21.5:
-            // - Passes vertexConsumers directly (instead of getBuffer(...))
-            // - Removed random parameter
+            // 1.21.6 FIX: Passing `vertexConsumers::getBuffer` satisfies the new BlockVertexConsumerProvider interface
             blockRenderManager.getModelRenderer().render(
                     world,
                     model,
                     renderState,
                     pos,
                     matrices,
-                    vertexConsumers,
+                    RenderLayerHelper.movingDelegate(vertexConsumers),
                     true,
                     renderState.getRenderingSeed(pos),
                     overlay
