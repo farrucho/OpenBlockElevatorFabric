@@ -58,8 +58,8 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
 
         BlockEntity be = world.getBlockEntity(pos);
         if (!(be instanceof ElevatorBlockEntity)) {
-            player.sendMessage(Text.literal("[Elevator DEBUG] No ElevatorBlockEntity at this position!"), true);
-            OpenBlocks.LOGGER.warn("[Elevator DEBUG] getBlockEntity returned {} at {}", be, pos);
+            //player.sendMessage(Text.literal("[Elevator DEBUG] No ElevatorBlockEntity at this position!"), true);
+            //OpenBlocks.LOGGER.warn("[Elevator DEBUG] getBlockEntity returned {} at {}", be, pos);
             return ActionResult.PASS;
         }
         ElevatorBlockEntity elevatorEntity = (ElevatorBlockEntity) be;
@@ -69,7 +69,7 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
 
         if (!(itemUsed instanceof BlockItem)) {
             // Not holding a block - nothing to camouflage with, let other interactions proceed.
-            player.sendMessage(Text.literal("[Elevator DEBUG] Not holding a BlockItem (holding: " + itemUsed + ")"), true);
+            //player.sendMessage(Text.literal("[Elevator DEBUG] Not holding a BlockItem (holding: " + itemUsed + ")"), true);
             return ActionResult.PASS;
         }
         BlockItem heldBlockItem = (BlockItem) itemUsed;
@@ -78,7 +78,7 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
         // Right-clicking with the Elevator Block itself resets to the default look.
         if (clickedBlock == this) {
             elevatorEntity.setCamouflageState(null);
-            player.sendMessage(Text.literal("[Elevator DEBUG] Camouflage cleared (server-side)."), true);
+            //player.sendMessage(Text.literal("[Elevator DEBUG] Camouflage cleared (server-side)."), true);
             return ActionResult.SUCCESS;
         }
 
@@ -88,13 +88,13 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
         boolean isFullCube = camouflageState.isFullCube(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
         if (!isFullCube) {
             player.sendMessage(Text.translatable("message.openblocks.elevator_needs_full_cube"), true);
-            OpenBlocks.LOGGER.info("[Elevator DEBUG] Rejected {} - not a full cube", Registry.BLOCK.getId(clickedBlock));
+            //OpenBlocks.LOGGER.info("[Elevator DEBUG] Rejected {} - not a full cube", Registry.BLOCK.getId(clickedBlock));
             return ActionResult.FAIL;
         }
 
         elevatorEntity.setCamouflageState(camouflageState);
-        player.sendMessage(Text.literal("[Elevator DEBUG] Camouflage SET (server-side) to " + Registry.BLOCK.getId(clickedBlock)), true);
-        OpenBlocks.LOGGER.info("[Elevator DEBUG] setCamouflageState called with {} at {}", camouflageState, pos);
+        //player.sendMessage(Text.literal("Camouflage SET to " + Registry.BLOCK.getId(clickedBlock)), true);
+        //OpenBlocks.LOGGER.info("[Elevator DEBUG] setCamouflageState called with {} at {}", camouflageState, pos);
         return ActionResult.SUCCESS;
     }
 }

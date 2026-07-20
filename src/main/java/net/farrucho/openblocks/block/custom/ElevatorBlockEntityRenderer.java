@@ -30,7 +30,7 @@ public class ElevatorBlockEntityRenderer implements BlockEntityRenderer<Elevator
     public ElevatorBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         // Fires once when Fabric wires up the renderer - if this line never appears in the log,
         // BlockEntityRendererRegistry.register() never ran / never matched this BlockEntityType.
-        OpenBlocks.LOGGER.info("[Elevator DEBUG] ElevatorBlockEntityRenderer constructed - registration is working.");
+        // OpenBlocks.LOGGER.info("[Elevator DEBUG] ElevatorBlockEntityRenderer constructed - registration is working.");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ElevatorBlockEntityRenderer implements BlockEntityRenderer<Elevator
         }
 
         if (!java.util.Objects.equals(renderState, lastLoggedState)) {
-            OpenBlocks.LOGGER.info("[Elevator DEBUG] render() at {} now drawing state = {}", entity.getPos(), renderState);
+            //OpenBlocks.LOGGER.info("[Elevator DEBUG] render() at {} now drawing state = {}", entity.getPos(), renderState);
             lastLoggedState = renderState;
         }
 
@@ -87,7 +87,7 @@ public class ElevatorBlockEntityRenderer implements BlockEntityRenderer<Elevator
         } catch (Throwable t) {
             // Minecraft normally swallows exceptions thrown inside a BlockEntityRenderer without
             // crashing, which makes rendering bugs like this invisible unless we log them ourselves.
-            OpenBlocks.LOGGER.error("[Elevator DEBUG] renderBlock threw an exception at " + entity.getPos(), t);
+            //OpenBlocks.LOGGER.error("[Elevator DEBUG] renderBlock threw an exception at " + entity.getPos(), t);
         }
     }
 }

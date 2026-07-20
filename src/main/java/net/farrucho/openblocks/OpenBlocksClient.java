@@ -8,7 +8,7 @@ import net.farrucho.openblocks.block.custom.ElevatorBlockEntityRenderer;
 public class OpenBlocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        OpenBlocks.LOGGER.info("CLIENT INITIALIZER RUNNING");
+        OpenBlocks.LOGGER.info("OPENBLOCKS CLIENT INITIALIZER RUNNING");
         BlockEntityRendererRegistry.register(
                 OpenBlocksModBlocks.ELEVATOR_BLOCK_ENTITY,
                 ElevatorBlockEntityRenderer::new

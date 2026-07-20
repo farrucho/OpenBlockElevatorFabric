@@ -80,7 +80,7 @@ public class ElevatorBlockEntity extends BlockEntity {
         }
         if (!java.util.Objects.equals(previous, camouflageState)) {
             String side = (world != null && world.isClient) ? "CLIENT" : "SERVER/unknown";
-            net.farrucho.openblocks.OpenBlocks.LOGGER.info("[Elevator DEBUG] ({}) readNbt at {} -> camouflageState = {}", side, pos, camouflageState);
+            //net.farrucho.openblocks.OpenBlocks.LOGGER.info("[Elevator DEBUG] ({}) readNbt at {} -> camouflageState = {}", side, pos, camouflageState);
         }
     }
 
