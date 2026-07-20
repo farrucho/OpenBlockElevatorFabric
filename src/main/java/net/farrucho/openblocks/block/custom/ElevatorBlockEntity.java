@@ -77,7 +77,7 @@ public class ElevatorBlockEntity extends BlockEntity {
 
         if (nbt.contains(CAMOUFLAGE_KEY, NbtElement.COMPOUND_TYPE)) {
             BlockState state = NbtHelper.toBlockState(
-                    registries.getWrapperOrThrow(Registries.BLOCK.getKey()),
+                    registries.getOrThrow(Registries.BLOCK.getKey()),
                     nbt.getCompound(CAMOUFLAGE_KEY)
             );
 

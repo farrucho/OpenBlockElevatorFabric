@@ -2,6 +2,7 @@ package net.farrucho.openblocks.mixin;
 
 import net.farrucho.openblocks.block.OpenBlocksModBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -13,21 +14,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.farrucho.openblocks.block.custom.ElevatorBlockFunctions.goUp;
-
-@Mixin(PlayerEntity.class)
+@Mixin(LivingEntity.class)
 public class OpenBlocksEntityJumpState {
-    @Inject(at = @At("HEAD"), method = "jump()V")
+    @Inject(method = "jump()V", at = @At("HEAD"))
     private void injected(CallbackInfo info) {
-        PlayerEntity p = (PlayerEntity)(Object)this;
-        //World world = p.getWorld();
+        LivingEntity entity = (LivingEntity)(Object)this;
+        if (!(entity instanceof PlayerEntity p)) {
+            return;
+        }
         World world = p.getWorld();
-        if(!world.isClient()){
-            //p.sendMessage(Text.literal("player jumped"));
+        if (!world.isClient()) {
             BlockPos blockpos = p.getBlockPos().down();
-            //Block block = world.getBlockState(blockpos).getBlock();
             BlockState blockState = world.getBlockState(blockpos);
-            if(blockState.isOf(OpenBlocksModBlocks.ELEVATOR_BLOCK) && !p.isInSneakingPose()){
-                //p.sendMessage(Text.literal("Elevador para cima"));
+
+            if (blockState.isOf(OpenBlocksModBlocks.ELEVATOR_BLOCK)
+                    && !p.isInSneakingPose()) {
                 goUp(blockpos, world, p);
             }
         }
