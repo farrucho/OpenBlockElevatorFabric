@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "openblocks",
-  "version": "1.0.0-1.21.6_1.21.8",
+  "version": "1.0.0-1.21.9_1.21.11",
 
   "name": "Open Block Elevator Mod",
   "description": "Simple port of the OpenBlocks Elevator mod to Fabric!",
@@ -31,7 +31,7 @@
   "depends": {
     "fabricloader": ">=0.14.6",
     "fabric": "*",
-    "minecraft": ">=1.21.6 <=1.21.8",
+    "minecraft": ">=1.21.9 <=1.21.11",
     "java": ">=21"
   },
   "suggests": {

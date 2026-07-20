@@ -36,7 +36,7 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
         // model into the chunk mesh every frame, on top of whatever the BER draws, causing
         // z-fighting/flicker between the two overlapping full-cube geometries. INVISIBLE means
         // this block contributes zero geometry of its own; the BER is 100% responsible for visuals.
-        return BlockRenderType.INVISIBLE;
+        return BlockRenderType.MODEL;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ElevatorBlock extends Block implements BlockEntityProvider {
             PlayerEntity player,
             BlockHitResult hit
     ) {
-        if (world.isClient) {
+        if (world.isClient()) {
             // Let the server handle the actual state change; still "succeed" client-side
             // so the swing animation plays and the interaction isn't passed further down.
             return ActionResult.SUCCESS;

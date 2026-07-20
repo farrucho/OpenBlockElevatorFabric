@@ -2,89 +2,93 @@ package net.farrucho.openblocks.block.custom;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.farrucho.openblocks.OpenBlocks;
-import net.farrucho.openblocks.block.OpenBlocksModBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.client.render.block.MovingBlockRenderState;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.BlockStateModel;
+import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
+import net.minecraft.client.render.command.ModelCommandRenderer;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 
-/**
- * Renders the elevator block as whatever block it's camouflaged as. Because this asks
- * Minecraft's own block model renderer to draw the target BlockState directly (with real world
- * context), it automatically gets the correct texture, tint (e.g. grass/leaves color), and
- * lighting/ambient occlusion for ANY block - no per-block model/texture setup required on our end.
- */
 @Environment(EnvType.CLIENT)
-public class ElevatorBlockEntityRenderer implements BlockEntityRenderer<ElevatorBlockEntity> {
-
-    private BlockState lastLoggedState = null;
+public class ElevatorBlockEntityRenderer
+        implements BlockEntityRenderer<ElevatorBlockEntity, ElevatorBlockEntityRenderState> {
 
     public ElevatorBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-        // Fires once when Fabric wires up the renderer
-        //OpenBlocks.LOGGER.info("[Elevator DEBUG] ElevatorBlockEntityRenderer constructed - registration is working.");
     }
 
     @Override
-    public void render(
+    public ElevatorBlockEntityRenderState createRenderState() {
+        return new ElevatorBlockEntityRenderState();
+    }
+
+    @Override
+    public void updateRenderState(
             ElevatorBlockEntity entity,
-            float tickDelta,
-            MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers,
-            int light,
-            int overlay,
-            Vec3d cameraPos
+            ElevatorBlockEntityRenderState state,
+            float tickProgress,
+            Vec3d cameraPos,
+            ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay
     ) {
+        BlockEntityRenderState.updateBlockEntityRenderState(
+                entity,
+                state,
+                crumblingOverlay
+        );
+
         World world = entity.getWorld();
         if (world == null) {
             return;
         }
 
-        BlockState renderState = entity.getCamouflageState();
+        BlockState camouflage = entity.getCamouflageState();
 
-        if (renderState == null) {
-            // No camouflage applied yet - show the elevator block's own plain look.
-            renderState = OpenBlocksModBlocks.ELEVATOR_BLOCK.getDefaultState();
+        // If there is no camouflage, flag it as false and return.
+        // The chunk renderer will natively display the default elevator block.
+        if (camouflage == null) {
+            state.hasCamouflage = false;
+            return;
         }
 
-        BlockPos pos = entity.getPos();
+        state.hasCamouflage = true;
+        MovingBlockRenderState moving = new MovingBlockRenderState();
 
-        if (!java.util.Objects.equals(renderState, lastLoggedState)) {
-            //OpenBlocks.LOGGER.info("[Elevator DEBUG] render() at {} now drawing state = {}", pos, renderState);
-            lastLoggedState = renderState;
-        }
+        moving.blockState = camouflage;
+        moving.world = world;
+        moving.entityBlockPos = entity.getPos();
+        moving.fallingBlockPos = entity.getPos();
+        moving.biome = world.getBiome(entity.getPos());
 
-        try {
+        state.movingBlock = moving;
+    }
+
+    @Override
+    public void render(
+            ElevatorBlockEntityRenderState state,
+            MatrixStack matrices,
+            OrderedRenderCommandQueue queue,
+            CameraRenderState cameraState
+    ) {
+        if (state.hasCamouflage) {
             matrices.push();
 
-            MinecraftClient client = MinecraftClient.getInstance();
-            BlockRenderManager blockRenderManager = client.getBlockRenderManager();
-            BlockStateModel model = blockRenderManager.getModel(renderState);
+            // Shrunk from 0.002f to 0.0002f.
+            // This micro-offset is enough to stop Z-fighting but keeps
+            // the camouflage tucked safely inside the vanilla crumble effect.
+            float offset = 0.0002f;
+            matrices.translate(-offset, -offset, -offset);
+            matrices.scale(1f + (offset * 2), 1f + (offset * 2), 1f + (offset * 2));
 
-            // 1.21.6 FIX: Passing `vertexConsumers::getBuffer` satisfies the new BlockVertexConsumerProvider interface
-            blockRenderManager.getModelRenderer().render(
-                    world,
-                    model,
-                    renderState,
-                    pos,
+            queue.submitMovingBlock(
                     matrices,
-                    RenderLayerHelper.movingDelegate(vertexConsumers),
-                    true,
-                    renderState.getRenderingSeed(pos),
-                    overlay
+                    state.movingBlock
             );
 
             matrices.pop();
-        } catch (Throwable t) {
-            //OpenBlocks.LOGGER.error("[Elevator DEBUG] render threw an exception at " + pos, t);
         }
     }
 }

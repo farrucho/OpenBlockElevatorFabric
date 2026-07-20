@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "openblocks:block/elevator_block"
+    "model": "openblocks:item/elevator_block"
   }
 }

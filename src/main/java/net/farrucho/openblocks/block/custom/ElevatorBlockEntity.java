@@ -51,7 +51,7 @@ public class ElevatorBlockEntity extends BlockEntity {
     /** Marks the block entity dirty for saving and pushes an update to nearby clients. */
     private void sync() {
         markDirty();
-        if (world != null && !world.isClient) {
+        if (world != null && !world.isClient()) {
             world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_ALL);
         }
     }

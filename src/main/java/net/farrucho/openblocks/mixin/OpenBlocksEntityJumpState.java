@@ -22,7 +22,7 @@ public class OpenBlocksEntityJumpState {
         if (!(entity instanceof PlayerEntity p)) {
             return;
         }
-        World world = p.getWorld();
+        World world = p.getEntityWorld();
         if (!world.isClient()) {
             BlockPos blockpos = p.getBlockPos().down();
             BlockState blockState = world.getBlockState(blockpos);
